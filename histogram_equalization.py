@@ -2,6 +2,7 @@
 
 import cv2
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 
 
@@ -24,7 +25,7 @@ def image_agcwd(img, a=0.25, truncated_cdf=False):
     h, w = img.shape[:2]
     hist, bins = np.histogram(img.flatten(), 256, [0, 256]) # Y 채널에 대한 hist
     cdf = hist.cumsum()                                     # 각 멤버값을 누적하여 더한 값을 멤버로 하는 1차원 배열을 생성
-    print(hist)
+
     cdf_normalized = cdf / cdf.max()
     prob_normalized = hist / hist.sum()
 
@@ -65,7 +66,9 @@ def process_dimmed(img):
 
 
 def main():
-    src = cv2.imread("./Images/mouse.jpg")
+    pwd = os.path.dirname(os.path.realpath(__file__))
+    img_path = os.path.join(pwd, "Images", "mouse.jpg")
+    src = cv2.imread(img_path)
     src = resize_image(src)
 
     cv2.imshow("src", src)
@@ -83,7 +86,7 @@ def main():
     # Process image for gamma correction
     img_output = None
     if t < -threshold:   # 어두운 이미지
-        print("Dimmed")
+        print("Dimmed Image")
         result = process_dimmed(Y)
         YCrCb[:, :, 0] = result
         img_output = cv2.cvtColor(YCrCb, cv2.COLOR_YCrCb2BGR)
