@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+from PIL import Image
 
 
 def resize_image(img):
@@ -102,9 +103,8 @@ def enhance_color(img, factor=1.2, count=1):
     return dst.astype(np.uint8)
 
 
-def main(img_path):
-    src = cv2.imread(img_path)
-
+def main(image):
+    src = np.array(image)
     src = resize_image(src)
     cv2.imshow("src", src)
 
@@ -118,7 +118,10 @@ def main(img_path):
 
 if __name__ == "__main__":
     pwd = os.path.dirname(os.path.realpath(__file__))
-    img_path = os.path.join(pwd, "Images", "perfume.jpg")
-    main(img_path)
+    img_path = os.path.join(pwd, "Images", "cup.jpg")
+    src = cv2.imread(img_path)
+    pil_image = Image.fromarray(src)
+    
+    main(pil_image)
     cv2.waitKey()
     cv2.destroyAllWindows()
