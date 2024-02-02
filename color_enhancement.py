@@ -18,13 +18,13 @@ def resize_image(img):
     return cropped_resized_img
 
 
-def image_agcwd(img, a=0.25, truncated_cdf=False):
+def image_agcwd(img, a=0.25, truncated_cdf=False, normalize=1.5):
     h, w = img.shape[:2]
     hist, bins = np.histogram(img.flatten(), 256, [0, 256])  # Y 채널에 대한 hist
-    cdf = hist.cumsum()  # 각 멤버값을 누적하여 더한 값을 멤버로 하는 1차원 배열을 생성
+    cdf = hist.cumsum()
 
     cdf_normalized = cdf / cdf.max()
-    prob_normalized = hist / hist.sum()
+    prob_normalized = hist / hist.sum() # Y 채널에 대한 hist 총합 1
 
     unique_intensity = np.unique(img)
     intensity_max = unique_intensity.max()
@@ -32,16 +32,16 @@ def image_agcwd(img, a=0.25, truncated_cdf=False):
     prob_min = prob_normalized.min()
     prob_max = prob_normalized.max()
 
-    pn_temp = (prob_normalized - prob_min) / (prob_max - prob_min)
+    pn_temp = (prob_normalized - prob_min) / (prob_max - prob_min) # Y 채널에 대한 hist [0:1]
     pn_temp[pn_temp > 0] = prob_max * (pn_temp[pn_temp > 0] ** a)
     pn_temp[pn_temp < 0] = prob_max * (-((-pn_temp[pn_temp < 0]) ** a))
-    prob_normalized_wd = pn_temp / pn_temp.sum()  # normalize to [0,1]
+    prob_normalized_wd = pn_temp / pn_temp.sum() * normalize # normalize to [0,normalize]
     cdf_prob_normalized_wd = prob_normalized_wd.cumsum()
 
     if truncated_cdf:
-        inverse_cdf = np.maximum(0.5, 1 - cdf_prob_normalized_wd)
+        inverse_cdf = np.maximum(normalize/2, normalize - cdf_prob_normalized_wd)
     else:
-        inverse_cdf = 1 - cdf_prob_normalized_wd
+        inverse_cdf = normalize - cdf_prob_normalized_wd
 
     img_new = img.copy()
     for i in unique_intensity:
@@ -58,7 +58,7 @@ def process_bright(img): # 밝은 이미지를 어둡게
 
 
 def process_dimmed(img): # 어두운 이미지를 밝게
-    agcwd = image_agcwd(img, a=1.0, truncated_cdf=True)
+    agcwd = image_agcwd(img, a=0.75, truncated_cdf=True)
     return agcwd
 
 
@@ -102,9 +102,7 @@ def enhance_color(img, factor=1.2, count=1):
     return dst.astype(np.uint8)
 
 
-def main():
-    pwd = os.path.dirname(os.path.realpath(__file__))
-    img_path = os.path.join(pwd, "Images", "cup.jpg")
+def main(img_path):
     src = cv2.imread(img_path)
 
     src = resize_image(src)
@@ -113,11 +111,14 @@ def main():
     brightened = image_brightness(src)
     cv2.imshow("brightened", brightened)
     
-    enhanced = enhance_color(brightened, factor=1.1, count=2)
+    enhanced = enhance_color(brightened, factor=1.7)
     cv2.imshow("enhanced", enhanced)
+    return enhanced
 
 
 if __name__ == "__main__":
-    main()
+    pwd = os.path.dirname(os.path.realpath(__file__))
+    img_path = os.path.join(pwd, "Images", "perfume.jpg")
+    main(img_path)
     cv2.waitKey()
     cv2.destroyAllWindows()
