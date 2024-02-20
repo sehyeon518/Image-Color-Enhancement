@@ -43,7 +43,7 @@
         
     - `prob_normalized_wd`: pn_temp 총합이 임의의 normalize가 되게 조절
 
-        > **총합이 1이 되게 정규화하면 이미지가 밝아지는 데 한계가 있는 것을 확인**
+        > :sparkles: **총합이 1이 되게 정규화하면 이미지가 밝아지는 데 한계가 있는 것을 확인**
 
         ![image](https://github.com/sehyeon518/Favorfit-Color-Equalization/assets/84698896/4b2cd745-2fa8-4500-b906-2d5a7d1470b5)
         
