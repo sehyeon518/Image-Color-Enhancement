@@ -62,10 +62,10 @@ def process_dimmed(img, a=0.75):  # 어두운 이미지를 밝게
     return agcwd
 
 
-def is_bright(Y):
+def is_bright(Y, shape):
     threshold = 0.3
     exp_in = 112
-    M, N = 512, 512
+    M, N = shape[0], shape[1]
     mean_in = np.sum(Y / (M * N))
     t = (mean_in - exp_in) / exp_in
     if t < -threshold:  # 어두운 이미지
@@ -103,12 +103,12 @@ def handler(image, gamma=0.75, factor=1.7):
     - The factor parameter enhances the color saturation.
     """
     src = np.array(image)
-    src = resize_image(src)
+    # src = resize_image(src)
 
     YCrCb = cv2.cvtColor(src, cv2.COLOR_BGR2YCrCb)
     Y = YCrCb[:, :, 0]
 
-    brightness = is_bright(Y)
+    brightness = is_bright(Y, src.shape)
     print(brightness)
 
     brightened = src
