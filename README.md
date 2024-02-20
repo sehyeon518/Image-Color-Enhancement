@@ -47,7 +47,7 @@
 
         ![image](https://github.com/sehyeon518/Favorfit-Color-Equalization/assets/84698896/4b2cd745-2fa8-4500-b906-2d5a7d1470b5)
         
-        original, normalize 0~1, normalize 0~1.5, normalize 0~2.0
+        original, normalize 0 ~ 1, normalize 0 ~ 1.5, normalize 0 ~2.0
         
     - `cdf_prob_normalized_wd`: prob_normalized의 누적합
         
