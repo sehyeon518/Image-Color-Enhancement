@@ -2,7 +2,7 @@
 
 이 프로젝트는 이미지의 색상을 강조하여 시각적으로 눈에 잘 띄도록 만드는 코드가 포함되어 있습니다. 
 
-조명 조건의 부족, 낮은 대비 또는 색상 불균형과 같은 문제를 해결하여 이미지의 색상 구도를 개선하여 더 생동감 있는 이미지로 만드는 것을 목표로 합니다.
+낮은 대비 또는 조명에 따른 색상 불균형과 같은 문제를 해결하여 이미지의 색상 구도를 개선하고 더 생동감 있는 이미지로 만드는 것을 목표로 합니다.
 
 
 ## Features
@@ -47,7 +47,7 @@
 
         ![image](https://github.com/sehyeon518/Favorfit-Color-Equalization/assets/84698896/4b2cd745-2fa8-4500-b906-2d5a7d1470b5)
         
-        original, normalize 0 ~ 1, normalize 0 ~ 1.5, normalize 0 ~2.0
+        `original` -> `normalize 0 ~ 1` -> `normalize 0 ~ 1.5`, `normalize 0 ~ 2.0`
         
     - `cdf_prob_normalized_wd`: prob_normalized의 누적합
         
